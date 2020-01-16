@@ -1,0 +1,23 @@
+GET http://localhost:8080/
+
+###
+GET http://localhost:8080/api/users
+
+###
+GET http://localhost:8080/api/users/11
+
+### Valid user creation
+POST http://localhost:8080/api/users/
+content-type: application/json
+
+{
+    "name": "Bart Simpson"
+}
+
+### User with no name
+POST http://localhost:8080/api/users/
+content-type: application/json
+
+
+### User with no body
+POST http://localhost:8080/api/users/
