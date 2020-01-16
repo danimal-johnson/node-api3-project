@@ -2,25 +2,30 @@ const express = require('express');
 const users = require('./userDb');
 const router = express.Router();
 
-// ---------- GET -------------
+// ---------- GET Users / Posts -------------
 router.get('/', (req, res) => {
   users.get()
     .then(users => res.status(200).json(users))
-    .catch(err => console.log(err));
+    .catch(err => {
+      console.log(err);
+      res.status(500).json( { errorMessage: "Server error. " });
+    });
 });
 
-router.get('/:id', (req, res) => {
-  const id = req.params.id;
-  users.getById(id)
+router.get('/:id', validateUserId, (req, res) => {
+  users.getById(req.params.id)
     .then(user => res.status(200).json(user))
     .catch(err => console.log(err));
 });
 
-router.get('/:id/posts', (req, res) => {
+router.get('/:id/posts', validateUserId, (req, res) => {
   // do your magic!
+  users.getById(req.params.id)
+    .then(users => res.status(200).json(users))
+    .catch(err => console.log(err));
 });
 
-// ---------- POST ------------
+// ---------- POST Users ------------
 router.post('/', validateUser, (req, res) => {
   const userinfo = req.body;
   users.insert(userinfo)
@@ -28,16 +33,17 @@ router.post('/', validateUser, (req, res) => {
     .catch(err => console.log(err));
 });
 
-router.post('/:id/posts', (req, res) => {
+router.post('/:id/posts', validateUserId, (req, res) => {
+  // do your magic!
+
+});
+
+// -------- PUT/DELETE Users -----------
+router.delete('/:id', validateUserId, (req, res) => {
   // do your magic!
 });
 
-// -------- PUT/DELETE -----------
-router.delete('/:id', (req, res) => {
-  // do your magic!
-});
-
-router.put('/:id', (req, res) => {
+router.put('/:id', validateUserId, (req, res) => {
   // do your magic!
 });
 
@@ -49,8 +55,11 @@ function validateUserId(req, res, next) {
   const id = req.params.id;
   users.getById(id)
     .then(user => {
-      req.params.id = id;
-      next();
+      if(user) {
+        req.user = user;
+        next();  
+      }
+      
     })
     .catch(err => console.log(err));
   console.log("We want the error 400 to go here, I think.");
@@ -58,29 +67,36 @@ function validateUserId(req, res, next) {
 }
 
 function validateUser(req, res, next) {
-  // do your magic!
-  console.log("REQUEST BODY:", req.body);
-  if (!req.body ||
-       req.body == {} ||
-       req.body == [] ||
-       req.body == null ||
-       req.body == undefined ||
-       req.body.length == 0
-       ) {
-    console.log ("Hey buddy!! There's no body!");
+  console.log("User Body:", req.body); // TODO: Remove
+  if (!req.body || Object.keys(req.body).length === 0) {
+      //  req.body == {} ||
+      //  req.body == [] ||
+      //  req.body == null ||
+      //  req.body == undefined ||
+      //  req.body.length == 0
+      //  ) {
     res.status(400).json({ message: "missing user data" });
   }
   else if (!req.body.name) {
     res.status(400).json({ message: "missing required name field" });
   }
   else {
-    console.log("Doing the next thing.");
     next();
   }
 }
 
 function validatePost(req, res, next) {
-  // do your magic!
+
+  console.log("Post Body:", req.body);
+  if (!req.body || Object.keys(req.body).length === 0) {
+    res.status(400).json({ message: "missing post data" });
+  }
+  else if (!req.body.text) {
+    res.status(400).json({ message: "missing required text field" });
+  }
+  else {
+    next();
+  }
 }
 
 // Example from class
