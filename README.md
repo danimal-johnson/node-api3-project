@@ -22,7 +22,7 @@ Follow these steps for completing your project.
 - [ ] Submit a Pull-Request to merge <firstName-lastName> Branch into master (student's Repository). **Please don't merge your own pull request**
 - [ ] Add your `Team Lead` as a reviewer on the pull-request
 - [ ] Your `Team Lead` will count the project as complete by merging the branch back into master.
-- [ ] Do your magic!
+- [x] Do your magic!
 
 ## Minimum Viable Product
 
@@ -43,13 +43,13 @@ Follow these steps for completing your project.
   - if the `id` parameter is valid, store that user object as `req.user`
   - if the `id` parameter does not match any user id in the database, cancel the request and respond with status `400` and `{ message: "invalid user id" }`
 
-- [ ] `validateUser()`
+- [x] `validateUser()`
 
   - `validateUser` validates the `body` on a request to create a new user
   - if the request `body` is missing, cancel the request and respond with status `400` and `{ message: "missing user data" }`
   - if the request `body` is missing the required `name` field, cancel the request and respond with status `400` and `{ message: "missing required name field" }`
 
-- [ ] `validatePost()`
+- [x] `validatePost()`
   - `validatePost` validates the `body` on a request to create a new post
   - if the request `body` is missing, cancel the request and respond with status `400` and `{ message: "missing post data" }`
   - if the request `body` is missing the required `text` field, cancel the request and respond with status `400` and `{ message: "missing required text field" }`

@@ -4,14 +4,18 @@ GET http://localhost:8080/
 GET http://localhost:8080/api/users
 
 ###
-GET http://localhost:8080/api/users/11
+GET http://localhost:8080/api/users/13
+
+###
+GET http://localhost:8080/api/users/4/posts
+
 
 ### Valid user creation
 POST http://localhost:8080/api/users/
 content-type: application/json
 
 {
-    "name": "Bart Simpson"
+    "name": "Papa Smurf"
 }
 
 ### User with no name
@@ -24,3 +28,23 @@ content-type: application/json
 
 ### User with no body
 POST http://localhost:8080/api/users/
+
+
+### Valid post creation
+POST http://localhost:8080/api/users/
+content-type: application/json
+
+{
+    "name": "Bart Simpson"
+}
+
+### Delete a user
+DELETE http://localhost:8080/api/users/45
+
+### Valid user update
+PUT http://localhost:8080/api/users/13
+content-type: application/json
+
+{
+    "name": "JarJar Binks"
+}
